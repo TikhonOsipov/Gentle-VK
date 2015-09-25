@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp">
+    <ImageView
+        android:id="@+id/drawer_row_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"/>
+    <com.tixon.gentlevk.views.TextViewRobotoMedium
+        android:id="@+id/drawer_row_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textSize="14sp"
+        android:textColor="#cc000000"
+        android:text="mail"
+        android:layout_marginLeft="72dp"/>
+</RelativeLayout>
