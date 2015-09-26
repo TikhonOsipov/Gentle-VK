@@ -3,5 +3,9 @@ package com.tixon.gentlevk;
 import java.util.ArrayList;
 
 public class Data {
-    ArrayList<Response> response;
+    private ArrayList<Response> response;
+
+    public ArrayList<Response> getResponse() {
+        return response;
+    }
 }

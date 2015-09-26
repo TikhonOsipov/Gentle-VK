@@ -13,5 +13,9 @@ public class Response {
     public int common_count, university, faculty, graduation, relation;
     public String university_name, faculty_name;
 
-    public Counters counters;
+    private Counters counters;
+
+    public Counters getCounters() {
+        return counters;
+    }
 }

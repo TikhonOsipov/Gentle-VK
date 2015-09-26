@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#fff"
+    android:id="@+id/dialog_frame"
+    android:layout_height="72dp">
+
+    <ImageView
+        android:id="@+id/dialog_photo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerVertical="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="72dp"
+        android:layout_toLeftOf="@+id/dialog_frame_layout_unread">
+        <TextView
+            android:id="@+id/tv_dialog_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Username" />
+
+        <TextView
+            android:id="@+id/tv_dialog_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="Message" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/dialog_frame_layout_unread"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="72dp">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/circle_background"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/tv_unread_messages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:text="1"
+            android:layout_gravity="center" />
+    </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#2000"
+        android:layout_alignParentBottom="true"/>
+
+    <View
+        android:id="@+id/dialog_frame_click"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

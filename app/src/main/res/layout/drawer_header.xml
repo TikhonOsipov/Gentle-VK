@@ -11,13 +11,15 @@
         android:paddingRight="16dp"
         android:layout_marginBottom="8dp"
         android:layout_alignParentBottom="true">
-        <com.tixon.gentlevk.views.TextViewRobotoMedium
+        <TextView
+            android:id="@+id/person_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name"
             android:textSize="14sp"/>
 
-        <com.tixon.gentlevk.views.TextViewRobotoRegular
+        <TextView
+            android:id="@+id/person_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="e-mail"

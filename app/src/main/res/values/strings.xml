@@ -6,4 +6,10 @@
     <string name="log_in">Log in</string>
     <string name="log_out">Log out</string>
     <string name="b_contunue">Continue</string>
+
+    <string-array name="views_array">
+        <item>Новости</item>
+        <item>Сообщения</item>
+        <item>Закладки</item>
+    </string-array>
 </resources>
