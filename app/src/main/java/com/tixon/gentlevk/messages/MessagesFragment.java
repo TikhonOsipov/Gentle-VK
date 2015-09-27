@@ -3,12 +3,11 @@ package com.tixon.gentlevk.messages;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.tixon.gentlevk.R;
@@ -24,6 +23,7 @@ public class MessagesFragment extends Fragment {
 
     RecyclerView recyclerView;
     MessagesRecyclerAdapter adapter;
+    CustomLayoutManager layoutManager;
     Gson gson = new Gson();
 
     public static Fragment newInstance() {
@@ -46,7 +46,16 @@ public class MessagesFragment extends Fragment {
                 DialogData data = gson.fromJson(response.json.toString(), DialogData.class);
                 adapter = new MessagesRecyclerAdapter(getActivity(), data.getResponse().items);
                 recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                layoutManager = new CustomLayoutManager(getActivity());
+
+                layoutManager.setOnOverScrollListener(new OnOverScrollListener() {
+                    @Override
+                    public void onOverScroll(int overScroll) {
+                        Log.d("myLogs", "overScroll = " + overScroll);
+                    }
+                });
+
+                recyclerView.setLayoutManager(layoutManager);
 
             }
 
@@ -72,4 +81,6 @@ public class MessagesFragment extends Fragment {
         messagesRequest.executeWithListener(messagesRequestListener);
         return v;
     }
+
+
 }

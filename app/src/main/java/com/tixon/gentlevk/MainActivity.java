@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch(position) {
             case 2:
-                fragment = new MessagesFragment();
+                fragment = MessagesFragment.newInstance();
                 break;
             default: break;
         }

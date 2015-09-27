@@ -1,16 +1,13 @@
 package com.tixon.gentlevk.messages;
 
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,8 +15,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.tixon.gentlevk.Data;
-import com.tixon.gentlevk.DrawableLoader;
-import com.tixon.gentlevk.OnLoadFinishedListener;
 import com.tixon.gentlevk.R;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
@@ -41,13 +36,6 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
     Context context;
     Data data;
     Gson gson = new Gson();
-    private static final int DRAWABLE_LOADER_ID = 1;
-
-    private OnLoadFinishedListener onLoadFinishedListener;
-
-    public void setOnLoadFinishedListener(OnLoadFinishedListener listener) {
-        this.onLoadFinishedListener = listener;
-    }
 
     public MessagesRecyclerAdapter(Context context, ArrayList<Dialog> dialogs) {
         this.context = context;
@@ -62,10 +50,17 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.textViewUnread.setText(String.valueOf(dialogs.get(position).unread));
-        //holder.textViewName.setText(String.valueOf(dialogs.get(position).getMessage().user_id));
         holder.textViewMessage.setText(dialogs.get(position).getMessage().body);
+
+        holder.frame.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                onTouchEvent(event, holder, position);
+                return true;
+            }
+        });
 
         VKRequest.VKRequestListener userInfoListener = new VKRequest.VKRequestListener() {
             @Override
@@ -75,21 +70,10 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                 data = gson.fromJson(response.json.toString(), Data.class);
 
                 holder.textViewName.setText(data.getResponse().get(0).first_name + " " + data.getResponse().get(0).last_name);
-                final Handler handler = new Handler();
+                holder.imageURL = data.getResponse().get(0).photo_50;
 
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final Drawable d = loadImageFromUrl(data.getResponse().get(0).photo_50);
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.imageViewPhoto.setImageDrawable(d);
-                            }
-                        });
-                    }
-                });
-                t.start();
+                new DrawableLoadAsyncTask().execute(holder);
+
             }
 
             @Override
@@ -124,6 +108,9 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
         ImageView imageViewPhoto;
         TextView textViewName, textViewMessage, textViewUnread;
         View frame;
+        public Drawable drawable;
+        String imageURL;
+
         public ViewHolder(View itemView) {
             super(itemView);
             imageViewPhoto = (ImageView) itemView.findViewById(R.id.dialog_photo);
@@ -134,15 +121,42 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
         }
     }
 
+    private void onTouchEvent(MotionEvent event, ViewHolder viewHolder, int i) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:case MotionEvent.ACTION_MOVE:
+                viewHolder.frame.setBackgroundColor(Color.parseColor("#33bbdefb"));
+                break;
+            case MotionEvent.ACTION_UP:case MotionEvent.ACTION_CANCEL:
+                viewHolder.frame.setBackgroundColor(Color.parseColor("#00ffffff"));
+                //onDrawerItemClickListener.onDrawerItemClick(i);
+                break;
+            default:
+                break;
+        }
+    }
 
+    public class DrawableLoadAsyncTask extends AsyncTask<ViewHolder, Void, ViewHolder> {
+        @Override
+        protected ViewHolder doInBackground(ViewHolder... params) {
+            ViewHolder mViewHolder = params[0];
 
-    public Drawable loadImageFromUrl(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            return Drawable.createFromStream(is, "src name");
-        } catch (Exception e) {
-            Log.d("myLogs", e.toString());
-            return null;
+            try {
+                InputStream is = (InputStream) new URL(mViewHolder.imageURL).getContent();
+                mViewHolder.drawable = Drawable.createFromStream(is, "src_name");
+            } catch (Exception e) {
+                Log.e("myLogs", "Downloading image failed:");
+                e.printStackTrace();
+                mViewHolder.drawable = null;
+            }
+            return mViewHolder;
+        }
+
+        @Override
+        protected void onPostExecute(ViewHolder viewHolder) {
+            super.onPostExecute(viewHolder);
+            if(viewHolder.drawable != null) {
+                viewHolder.imageViewPhoto.setImageDrawable(viewHolder.drawable);
+            }
         }
     }
 }
