@@ -43,6 +43,7 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onComplete(VKResponse response) {
                 super.onComplete(response);
+                Log.d("myLogs", "data = " + response.json.toString());
                 DialogData data = gson.fromJson(response.json.toString(), DialogData.class);
                 adapter = new MessagesRecyclerAdapter(getActivity(), data.getResponse().items);
                 recyclerView.setAdapter(adapter);

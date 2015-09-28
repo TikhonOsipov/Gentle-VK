@@ -1,6 +1,7 @@
 package com.tixon.gentlevk.messages;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.tixon.gentlevk.Data;
 import com.tixon.gentlevk.R;
+import com.tixon.gentlevk.attachments.Attachment;
+import com.tixon.gentlevk.dialog.DialogActivity;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -52,7 +55,17 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.textViewUnread.setText(String.valueOf(dialogs.get(position).unread));
-        holder.textViewMessage.setText(dialogs.get(position).getMessage().body);
+
+        ArrayList<Attachment> attachments = dialogs.get(position).getMessage().getAttachments();
+
+        String attachmentsList = "";
+
+        if(attachments != null)
+            for(int i = 0; i < attachments.size(); i++) {
+                attachmentsList += attachments.get(i).getAttachment() + "; ";
+            }
+
+        holder.textViewMessage.setText(dialogs.get(position).getMessage().body + attachmentsList);
 
         holder.frame.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -71,9 +84,9 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
 
                 holder.textViewName.setText(data.getResponse().get(0).first_name + " " + data.getResponse().get(0).last_name);
                 holder.imageURL = data.getResponse().get(0).photo_50;
+                holder.userId = data.getResponse().get(0).id;
 
                 new DrawableLoadAsyncTask().execute(holder);
-
             }
 
             @Override
@@ -110,6 +123,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
         View frame;
         public Drawable drawable;
         String imageURL;
+        int userId;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -129,6 +143,10 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
             case MotionEvent.ACTION_UP:case MotionEvent.ACTION_CANCEL:
                 viewHolder.frame.setBackgroundColor(Color.parseColor("#00ffffff"));
                 //onDrawerItemClickListener.onDrawerItemClick(i);
+
+                Intent startDialogActivityIntent = new Intent(context, DialogActivity.class);
+                startDialogActivityIntent.putExtra("user_id", viewHolder.userId);
+                context.startActivity(startDialogActivityIntent);
                 break;
             default:
                 break;
