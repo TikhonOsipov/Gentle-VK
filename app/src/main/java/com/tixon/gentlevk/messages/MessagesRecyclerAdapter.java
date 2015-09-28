@@ -48,7 +48,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dialog_layout, parent, false);
+                .inflate(R.layout.dialogs_row_layout, parent, false);
         return new ViewHolder(v);
     }
 
@@ -140,13 +140,17 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
             case MotionEvent.ACTION_DOWN:case MotionEvent.ACTION_MOVE:
                 viewHolder.frame.setBackgroundColor(Color.parseColor("#33bbdefb"));
                 break;
-            case MotionEvent.ACTION_UP:case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_UP:
                 viewHolder.frame.setBackgroundColor(Color.parseColor("#00ffffff"));
                 //onDrawerItemClickListener.onDrawerItemClick(i);
-
                 Intent startDialogActivityIntent = new Intent(context, DialogActivity.class);
                 startDialogActivityIntent.putExtra("user_id", viewHolder.userId);
                 context.startActivity(startDialogActivityIntent);
+                break;
+            case MotionEvent.ACTION_SCROLL:
+                viewHolder.frame.setBackgroundColor(Color.parseColor("#33bbdefb"));
+            case MotionEvent.ACTION_CANCEL:
+                viewHolder.frame.setBackgroundColor(Color.parseColor("#00ffffff"));
                 break;
             default:
                 break;
