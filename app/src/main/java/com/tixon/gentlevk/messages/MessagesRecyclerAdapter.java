@@ -1,5 +1,6 @@
 package com.tixon.gentlevk.messages;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -37,12 +38,14 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
 
     ArrayList<Dialog> dialogs;
     Context context;
+    Activity activity;
     Data data;
     Gson gson = new Gson();
 
-    public MessagesRecyclerAdapter(Context context, ArrayList<Dialog> dialogs) {
+    public MessagesRecyclerAdapter(Activity activity, Context context, ArrayList<Dialog> dialogs) {
         this.context = context;
         this.dialogs = dialogs;
+        this.activity = activity;
     }
 
     @Override
@@ -146,6 +149,8 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                 Intent startDialogActivityIntent = new Intent(context, DialogActivity.class);
                 startDialogActivityIntent.putExtra("user_id", viewHolder.userId);
                 context.startActivity(startDialogActivityIntent);
+                activity.overridePendingTransition(R.anim.slide_in, R.anim.slide_in);
+
                 break;
             case MotionEvent.ACTION_SCROLL:
                 viewHolder.frame.setBackgroundColor(Color.parseColor("#33bbdefb"));

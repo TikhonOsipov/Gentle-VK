@@ -45,7 +45,7 @@ public class MessagesFragment extends Fragment {
                 super.onComplete(response);
                 Log.d("myLogs", "data = " + response.json.toString());
                 DialogData data = gson.fromJson(response.json.toString(), DialogData.class);
-                adapter = new MessagesRecyclerAdapter(getActivity(), data.getResponse().items);
+                adapter = new MessagesRecyclerAdapter(getActivity(), getActivity(), data.getResponse().items);
                 recyclerView.setAdapter(adapter);
                 layoutManager = new CustomLayoutManager(getActivity());
 
