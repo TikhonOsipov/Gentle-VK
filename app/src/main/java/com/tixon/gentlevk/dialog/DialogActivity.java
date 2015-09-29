@@ -1,6 +1,8 @@
 package com.tixon.gentlevk.dialog;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -8,8 +10,6 @@ import android.view.MenuItem;
 import com.google.gson.Gson;
 import com.tixon.gentlevk.BaseActivity;
 import com.tixon.gentlevk.R;
-import com.tixon.gentlevk.messages.DialogData;
-import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
@@ -21,6 +21,9 @@ import com.vk.sdk.api.VKResponse;
  */
 public class DialogActivity extends BaseActivity {
     Toolbar toolbar;
+    RecyclerView dialogRecyclerView;
+    LinearLayoutManager layoutManager;
+    DialogRecyclerAdapter adapter;
     Gson gson = new Gson();
 
     @Override
@@ -35,12 +38,19 @@ public class DialogActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        dialogRecyclerView = (RecyclerView) findViewById(R.id.current_dialog_recycler_view);
+        layoutManager = new LinearLayoutManager(this);
+
+
         VKRequest.VKRequestListener dialogRequestListener = new VKRequest.VKRequestListener() {
             @Override
             public void onComplete(VKResponse response) {
                 super.onComplete(response);
                 Log.d("myLogs", "dialog = " + response.json.toString());
                 MessagesHistoryData data = gson.fromJson(response.json.toString(), MessagesHistoryData.class);
+                adapter = new DialogRecyclerAdapter(getApplicationContext(), data.getMessageResponse().getItems());
+                dialogRecyclerView.setLayoutManager(layoutManager);
+                dialogRecyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -62,9 +72,7 @@ public class DialogActivity extends BaseActivity {
         int userId = getIntent().getIntExtra("user_id", 0);
         Log.d("myLogs", "user_id = " + userId);
 
-        //VKRequest dialogRequest = VKApi.messages().get(VKParameters.from(VKApiConst.USER_ID, String.valueOf(userId)));
-        VKRequest dialogRequest = new VKRequest("messages.getHistory", VKParameters.from(VKApiConst.USER_ID, String.valueOf(userId)))
-                ;
+        VKRequest dialogRequest = new VKRequest("messages.getHistory", VKParameters.from(VKApiConst.USER_ID, String.valueOf(userId)));
         dialogRequest.setRequestListener(dialogRequestListener);
         dialogRequest.executeWithListener(dialogRequestListener);
     }

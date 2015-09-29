@@ -24,6 +24,7 @@
             android:id="@+id/tv_dialog_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:paddingTop="10dp"
             android:textSize="16sp"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -33,6 +34,7 @@
             android:id="@+id/tv_dialog_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:textSize="14sp"
             android:text="Message" />
     </LinearLayout>

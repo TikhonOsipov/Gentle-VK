@@ -30,7 +30,9 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/button_send_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:background="#007700"
+            android:src="@android:drawable/ic_menu_send"
+            android:layout_width="48dp"
+            android:layout_height="48dp"/>
     </LinearLayout>
 </RelativeLayout>

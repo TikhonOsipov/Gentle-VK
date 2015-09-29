@@ -4,10 +4,10 @@ package com.tixon.gentlevk.attachments;
  * Created by Tixon
  */
 public class Attachment {
-    Photo photo;
-    Audio audio;
-    Video video;
-    Document doc;
+    public Photo photo;
+    public Audio audio;
+    public Video video;
+    public Document doc;
 
     public String getAttachment() {
         StringBuilder attachment = new StringBuilder("");

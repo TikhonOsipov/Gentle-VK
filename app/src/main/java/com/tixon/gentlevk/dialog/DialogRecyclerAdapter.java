@@ -7,8 +7,10 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tixon.gentlevk.R;
@@ -42,7 +44,20 @@ public class DialogRecyclerAdapter extends RecyclerView.Adapter<DialogRecyclerAd
     @Override
     public void onBindViewHolder(DialogRecyclerAdapter.ViewHolder holder, int position) {
         ArrayList<Attachment> attachments = messages.get(position).getAttachments();
+        holder.textViewMessage.setText(messages.get(position).body);
 
+        if(attachments != null) {
+            for(int i = 0; i < attachments.size(); i++) {
+                if(attachments.get(i).photo != null) {
+                    holder.imageURL = attachments.get(i).photo.photo_807;
+                    new DrawableLoadAsyncTask().execute(holder);
+                    break;
+                }
+                if(attachments.get(i).audio != null) {
+                    //holder.cardRootLayout.addView
+                }
+            }
+        }
     }
 
     @Override
@@ -52,6 +67,7 @@ public class DialogRecyclerAdapter extends RecyclerView.Adapter<DialogRecyclerAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        RelativeLayout cardRootLayout;
         TextView textViewMessage;
         ImageView imageView;
 
@@ -60,6 +76,7 @@ public class DialogRecyclerAdapter extends RecyclerView.Adapter<DialogRecyclerAd
 
         public ViewHolder(CardView cardView) {
             super(cardView);
+            cardRootLayout = (RelativeLayout) cardView.findViewById(R.id.message_card_relative_layout);
             textViewMessage = (TextView) cardView.findViewById(R.id.message_body_text_view);
             imageView = (ImageView) cardView.findViewById(R.id.messages_image_view);
         }

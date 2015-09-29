@@ -8,9 +8,9 @@ import java.util.ArrayList;
  * Created by Tixon
  */
 public class Message {
-    int id, out, user_id, read_state;
-    long date;
-    String title, body;
+    public int id, out, user_id, read_state;
+    public long date;
+    public String title, body;
     private ArrayList<Attachment> attachments;
 
     public ArrayList<Attachment> getAttachments() {
