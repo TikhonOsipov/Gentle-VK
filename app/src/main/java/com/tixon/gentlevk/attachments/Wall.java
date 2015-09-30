@@ -9,12 +9,12 @@ import java.util.ArrayList;
 /**
  * Created by Tixon
  */
-public class Post {
+public class Wall {
     public int id, owner_id, from_id, date, reply_owner_id, reply_post_id, friends_only, signer_id;
     public int can_pin, is_pinned;
     public String text, post_type;
     public PostSource post_source;
-    public ArrayList<Post> copy_history;
+    public ArrayList<Wall> copy_history;
 
     public ArrayList<Attachment> attachments;
 

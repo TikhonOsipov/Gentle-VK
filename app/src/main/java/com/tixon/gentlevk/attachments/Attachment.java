@@ -9,6 +9,7 @@ public class Attachment {
     public Video video;
     public Document doc;
     public Poll poll;
+    public Wall wall;
 
     public String getAttachment() {
         StringBuilder attachment = new StringBuilder("");
@@ -20,7 +21,7 @@ public class Attachment {
         return attachment.toString();
     }
 
-    private String getTime(int seconds) {
+    public static String getTime(int seconds) {
         String time;
         int h, m, s;
         m = seconds / 60;
