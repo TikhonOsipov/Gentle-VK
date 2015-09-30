@@ -44,8 +44,7 @@ public class MainActivity extends BaseActivity {
                 Log.d("myLogs", "response = " + response.json.toString());
 
                 drawerAdapter =
-                        new DrawerAdapter(getResources().getStringArray(R.array.views_array), data != null ? data.getResponse().get(0).first_name + " " + data.getResponse().get(0).last_name : "",
-                        data != null ? data.getResponse().get(0).id : 0);
+                        new DrawerAdapter(getResources().getStringArray(R.array.views_array), data.getResponse().get(0));
                 drawerRecyclerView.setAdapter(drawerAdapter);
                 drawerRecyclerView.setHasFixedSize(true);
                 drawerRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

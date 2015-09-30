@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="230dp"
     android:background="@color/blue_700">
+
+    <com.tixon.gentlevk.views.CircleImageView
+        android:id="@+id/profile_photo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"

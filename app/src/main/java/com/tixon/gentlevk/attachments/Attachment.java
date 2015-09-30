@@ -8,6 +8,7 @@ public class Attachment {
     public Audio audio;
     public Video video;
     public Document doc;
+    public Poll poll;
 
     public String getAttachment() {
         StringBuilder attachment = new StringBuilder("");

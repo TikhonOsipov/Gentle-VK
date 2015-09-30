@@ -12,7 +12,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -123,6 +126,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewPhoto;
         TextView textViewName, textViewMessage, textViewUnread;
+        RelativeLayout relativeLayout;
         View frame;
         public Drawable drawable;
         String imageURL;
@@ -130,6 +134,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
 
         public ViewHolder(View itemView) {
             super(itemView);
+            relativeLayout = (RelativeLayout) itemView.findViewById(R.id.dialog_frame);
             imageViewPhoto = (ImageView) itemView.findViewById(R.id.dialog_photo);
             textViewName = (TextView) itemView.findViewById(R.id.tv_dialog_username);
             textViewMessage = (TextView) itemView.findViewById(R.id.tv_dialog_message);
@@ -149,7 +154,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<MessagesRecycl
                 Intent startDialogActivityIntent = new Intent(context, DialogActivity.class);
                 startDialogActivityIntent.putExtra("user_id", viewHolder.userId);
                 context.startActivity(startDialogActivityIntent);
-                activity.overridePendingTransition(R.anim.slide_in, R.anim.slide_in);
+                //activity.overridePendingTransition(R.anim.slide_in, R.anim.slide_in);
 
                 break;
             case MotionEvent.ACTION_SCROLL:

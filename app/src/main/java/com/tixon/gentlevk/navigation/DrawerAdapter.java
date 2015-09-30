@@ -1,7 +1,10 @@
 package com.tixon.gentlevk.navigation;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +15,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tixon.gentlevk.R;
+import com.tixon.gentlevk.Response;
+import com.tixon.gentlevk.views.CircleImageView;
+
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Created by Tixon
@@ -22,8 +30,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
     private static final int ROW_TYPE = 1;
 
     private String[] rows;
-    private String name;
-    private int id;
+    private Response response;
 
     private OnDrawerItemClickListener listener;
 
@@ -31,10 +38,9 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
         this.listener = listener;
     }
 
-    public DrawerAdapter(String[] rows, String name, int id) {
+    public DrawerAdapter(String[] rows, Response response) {
         this.rows = rows;
-        this.name = name;
-        this.id = id;
+        this.response = response;
     }
 
     @Override
@@ -92,8 +98,11 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
             });
         }
         if(viewHolder.viewType == HEADER_TYPE) {
-            viewHolder.tv_name.setText(name);
-            viewHolder.tv_id.setText(String.valueOf(id));
+            viewHolder.tv_name.setText(response.first_name + " " + response.last_name);
+            viewHolder.tv_id.setText(String.valueOf(response.id));
+            viewHolder.profilePhotoURL = response.photo_100;
+            new DrawableLoadAsyncTask().execute(viewHolder);
+
         }
     }
 
@@ -114,15 +123,20 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
         protected int viewType;
         RelativeLayout frame;
         ImageView icon;
+        CircleImageView profilePhoto;
         TextView text;
 
         TextView tv_name, tv_id; //test
+
+        String profilePhotoURL;
+        Drawable profilePhotoDrawable;
 
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
             this.viewType = viewType;
 
             if(viewType == HEADER_TYPE) {
+                profilePhoto = (CircleImageView) itemView.findViewById(R.id.profile_photo);
                 tv_name = (TextView) itemView.findViewById(R.id.person_name);
                 tv_id = (TextView) itemView.findViewById(R.id.person_id);
             }
@@ -131,6 +145,31 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
                 frame = (RelativeLayout) itemView.findViewById(R.id.drawer_row_frame);
                 icon = (ImageView) itemView.findViewById(R.id.drawer_row_image_view);
                 text = (TextView) itemView.findViewById(R.id.drawer_row_text_view);
+            }
+        }
+    }
+
+    public class DrawableLoadAsyncTask extends AsyncTask<ViewHolder, Void, ViewHolder> {
+        @Override
+        protected ViewHolder doInBackground(ViewHolder... params) {
+            ViewHolder mViewHolder = params[0];
+
+            try {
+                InputStream is = (InputStream) new URL(mViewHolder.profilePhotoURL).getContent();
+                mViewHolder.profilePhotoDrawable = Drawable.createFromStream(is, "src_name");
+            } catch (Exception e) {
+                Log.e("myLogs", "Downloading image failed:");
+                e.printStackTrace();
+                mViewHolder.profilePhotoDrawable = null;
+            }
+            return mViewHolder;
+        }
+
+        @Override
+        protected void onPostExecute(ViewHolder viewHolder) {
+            super.onPostExecute(viewHolder);
+            if(viewHolder.profilePhotoDrawable != null) {
+                viewHolder.profilePhoto.setImageDrawable(viewHolder.profilePhotoDrawable);
             }
         }
     }

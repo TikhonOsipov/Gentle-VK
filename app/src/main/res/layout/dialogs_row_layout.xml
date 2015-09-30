@@ -6,7 +6,7 @@
     android:id="@+id/dialog_frame"
     android:layout_height="72dp">
 
-    <ImageView
+    <com.tixon.gentlevk.views.CircleImageView
         android:id="@+id/dialog_photo"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -60,14 +60,17 @@
             android:text="1"
             android:layout_gravity="center" />
     </FrameLayout>
+    <!--Divider-->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#2000"
+        android:background="@color/divider_black"
+        android:layout_toRightOf="@+id/dialog_photo"
         android:layout_alignParentBottom="true"/>
 
     <View
         android:id="@+id/dialog_frame_click"
+        android:stateListAnimator="@anim/my_animator"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
