@@ -93,6 +93,15 @@ public class DialogRecyclerAdapter extends RecyclerView.Adapter<DialogRecyclerAd
                     insertPoint.addView(doc, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     //break;
                 }
+
+                if(attachments.get(i).wall != null) {
+                    View wall = inflater.inflate(R.layout.wall_include, null);
+
+                    TextView tvWallTitle = (TextView) wall.findViewById(R.id.wall_include_name);
+                    tvWallTitle.setText(attachments.get(i).wall.text);
+
+                    insertPoint.addView(wall, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                }
             }
         }
     }
