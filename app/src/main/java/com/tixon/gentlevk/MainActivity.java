@@ -1,5 +1,6 @@
 package com.tixon.gentlevk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,7 @@ import com.google.gson.Gson;
 import com.tixon.gentlevk.messages.MessagesFragment;
 import com.tixon.gentlevk.navigation.DrawerAdapter;
 import com.tixon.gentlevk.navigation.OnDrawerItemClickListener;
+import com.tixon.gentlevk.profile.ProfileActivity;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -101,6 +103,8 @@ public class MainActivity extends BaseActivity {
         Fragment fragment = null;
 
         switch(position) {
+            case 1:
+                startActivity(new Intent(this, ProfileActivity.class));
             case 2:
                 fragment = MessagesFragment.newInstance();
                 break;
